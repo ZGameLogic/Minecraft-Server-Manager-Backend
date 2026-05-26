@@ -5,7 +5,8 @@ on:
 
 jobs:
   deploy:
-    runs-on: DESKTOP-92MRBKP
+    runs-on: [self-hosted, Windows]
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v6
