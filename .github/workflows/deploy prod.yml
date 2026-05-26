@@ -27,6 +27,14 @@ jobs:
           name: minecraft-server-manager-backend.jar
           path: target/minecraft-server-manager-backend-*.jar
 
+  disable-monitor:
+    uses: zgamelogic/github-actions/.github/workflows/monitor-status.yaml@v1.0.2
+    needs: [ build-and-upload ]
+    with:
+      applicationId: '53'
+      monitorId: '55'
+      active: false
+
   deploy:
     needs: build-and-upload
     runs-on: [self-hosted, Windows]
@@ -48,3 +56,12 @@ jobs:
 
       - name: Start Service
         run: C:\Users\Ben\Desktop\nssm.exe start "Minecraft Server Manager"
+
+  enable-monitor:
+    uses: zgamelogic/github-actions/.github/workflows/monitor-status.yaml@v1.0.2
+    if: ${{ !cancelled() && needs.disable-monitor.result == 'success' }}
+    needs: [ deploy, disable-monitor ]
+    with:
+      applicationId: '53'
+      monitorId: '55'
+      active: true
