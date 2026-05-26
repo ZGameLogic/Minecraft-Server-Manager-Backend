@@ -1,0 +1,28 @@
+name: deploy development
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: DESKTOP-92MRBKP
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Build project
+        run: mvn clean install
+
+      - name: Deploy to development
+        run: echo "Deploying to development environment..."
