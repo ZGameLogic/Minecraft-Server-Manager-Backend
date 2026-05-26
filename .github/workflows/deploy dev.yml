@@ -11,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -25,8 +25,12 @@ jobs:
       - name: Build project
         run: mvn clean package
 
+      - name: Get project version
+        id: version
+        run: echo "value=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)" >> "$GITHUB_OUTPUT"
+
       - name: Upload jar
         uses: actions/upload-artifact@v7
         with:
-          name: minecraft-server-manager-backend-*.jar
-          path: target/*.jar
+          name: minecraft-server-manager-backend-${{ steps.version.outputs.value }}
+          path: target/minecraft-server-manager-backend-${{ steps.version.outputs.value }}.jar
