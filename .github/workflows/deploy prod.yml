@@ -4,7 +4,7 @@ on:
     types: [published]
 
 jobs:
-  deploy:
+  build-and-upload:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 25
@@ -24,5 +24,27 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           retention-days: 5
-          name: minecraft-server-manager-backend-*.jar
-          path: target/*.jar
+          name: minecraft-server-manager-backend.jar
+          path: target/minecraft-server-manager-backend-*.jar
+
+  deploy:
+    needs: build-and-upload
+    runs-on: [self-hosted, Windows]
+    environment: production
+    steps:
+      - name: Download jar
+        uses: actions/download-artifact@v7
+        with:
+          name: minecraft-server-manager-backend.jar
+
+      - name: Shutdown Service
+        run: nssm stop "Minecraft Server Manager"
+
+      - name: delete old jar
+        run: del "C:\Users\Ben\Minecraft Server Manager\minecraft-server-manager-backend.jar"
+
+      - name: copy new jar
+        run: copy minecraft-server-manager-backend-* "C:\Users\Ben\Minecraft Server Manager\minecraft-server-manager-backend.jar"
+
+      - name: Start Service
+        run: nssm start "Minecraft Server Manager"

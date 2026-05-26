@@ -25,10 +25,6 @@ jobs:
       - name: Build project
         run: mvn clean package
 
-      - name: Get project version
-        id: version
-        run: echo "value=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)" >> "$GITHUB_OUTPUT"
-
       - name: Upload jar
         uses: actions/upload-artifact@v7
         with:
@@ -44,3 +40,15 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: minecraft-server-manager-backend.jar
+
+      - name: Shutdown Service
+        run: nssm stop "Minecraft Server Manager Dev"
+
+      - name: delete old jar
+        run: del "C:\Users\Ben\Minecraft Server Manager Dev\minecraft-server-manager-backend.jar"
+
+      - name: copy new jar
+        run: copy minecraft-server-manager-backend-* "C:\Users\Ben\Minecraft Server Manager Dev\minecraft-server-manager-backend.jar"
+
+      - name: Start Service
+        run: nssm start "Minecraft Server Manager Dev"
