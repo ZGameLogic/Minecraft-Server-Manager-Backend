@@ -23,5 +23,6 @@ jobs:
       - name: Upload jar
         uses: actions/upload-artifact@v7
         with:
+          retention-days: 5
           name: minecraft-server-manager-backend-*.jar
           path: target/*.jar
