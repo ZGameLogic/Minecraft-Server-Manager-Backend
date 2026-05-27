@@ -25,8 +25,8 @@ public class AuthenticationService {
     private final DiscordService discordService;
     private final AuthenticationDataRepository authenticationDataRepository;
 
-    public AuthenticationData authorizeWithDiscordCode(String code){
-        DiscordAuthenticationResponse authRes = discordService.authorizeWithDiscordCode(code).orElseThrow(InvalidDiscordCodeException::new);
+    public AuthenticationData authorizeWithDiscordCode(String code, String redirectUrl) {
+        DiscordAuthenticationResponse authRes = discordService.authorizeWithDiscordCode(code, redirectUrl).orElseThrow(InvalidDiscordCodeException::new);
         DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authRes.accessToken()).orElseThrow(InvalidDiscordTokenException::new);
         AuthenticationData authData = new AuthenticationData(
             generateToken(),
