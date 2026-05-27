@@ -31,7 +31,7 @@ jobs:
     uses: zgamelogic/github-actions/.github/workflows/monitor-status.yaml@v1.0.2
     needs: [ build-and-upload ]
     with:
-      applicationId: '53'
+      applicationId: 53
       monitorId: '55'
       active: false
 
@@ -62,6 +62,6 @@ jobs:
     if: ${{ !cancelled() && needs.disable-monitor.result == 'success' }}
     needs: [ deploy, disable-monitor ]
     with:
-      applicationId: '53'
+      applicationId: 53
       monitorId: '55'
       active: true
