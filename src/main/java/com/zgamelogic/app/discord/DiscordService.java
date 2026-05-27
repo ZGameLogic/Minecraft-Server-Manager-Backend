@@ -14,18 +14,14 @@ import java.util.Optional;
 public class DiscordService {
     private final RestClient restClient;
     private final MultiValueMap<String, String> defaultBody;
-    private final String redirectUrl;
 
     public DiscordService(
             @Value("${discord.client.id}") String id,
-            @Value("${discord.client.secret}") String secret,
-            @Value("${discord.client.redirect-url}") String redirectUrl
+            @Value("${discord.client.secret}") String secret
     ) {
         defaultBody = new LinkedMultiValueMap<>();
         defaultBody.add("client_id", id);
         defaultBody.add("client_secret", secret);
-
-        this.redirectUrl = redirectUrl;
 
         restClient = RestClient.builder()
             .baseUrl("https://discord.com/api/oauth2")
@@ -33,7 +29,7 @@ public class DiscordService {
             .build();
     }
 
-    public Optional<DiscordAuthenticationResponse> authorizeWithDiscordCode(String code) {
+    public Optional<DiscordAuthenticationResponse> authorizeWithDiscordCode(String code, String redirectUrl) {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>(defaultBody);
         form.add("grant_type",  "authorization_code");
         form.add("code", code);

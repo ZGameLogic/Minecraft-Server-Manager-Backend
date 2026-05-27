@@ -1,8 +1,11 @@
 ### Authenticate with a code
 POST http://localhost:8080/api/auth/code
-Content-Type: text/plain
+Content-Type: application/json
 
-code
+{
+    "code": "code",
+    "redirect_url": "http://localhost:8080/api/login"
+}
 
 ### Authenticate with a token
 POST http://localhost:8080/api/auth/token

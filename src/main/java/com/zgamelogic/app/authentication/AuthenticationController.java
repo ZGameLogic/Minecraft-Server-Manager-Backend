@@ -14,8 +14,8 @@ public class AuthenticationController {
 
     @JsonView(Views.AuthView.class)
     @PostMapping("/auth/code")
-    public AuthenticationData authorizeWithDiscordCode(@RequestBody String code){
-        return authenticationService.authorizeWithDiscordCode(code);
+    public AuthenticationData authorizeWithDiscordCode(@RequestBody CodeAuthenticationRequest req){
+        return authenticationService.authorizeWithDiscordCode(req.code(), req.redirectUrl());
     }
 
     @JsonView(Views.AuthView.class)
