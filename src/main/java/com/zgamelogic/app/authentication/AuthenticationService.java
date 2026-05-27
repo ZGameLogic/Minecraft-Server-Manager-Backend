@@ -1,43 +1,25 @@
 package com.zgamelogic.app.authentication;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.zgamelogic.app.authentication.db.AuthenticationDataRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
 
 @Service
+@AllArgsConstructor
 public class AuthenticationService {
-    private final RestClient restClient;
-    private final MultiValueMap<String, String> defaultBody;
-    private final String redirectUrl;
+    private final AuthenticationDataRepository authenticationDataRepository;
 
-    public AuthenticationService(
-            @Value("${discord.client.id}") String id,
-            @Value("${discord.client.secret}") String secret,
-            @Value("${discord.client.redirect-url}") String redirectUrl
-    ) {
-        defaultBody = new LinkedMultiValueMap<>();
-        defaultBody.add("client_id", id);
-        defaultBody.add("client_secret", secret);
+    public void authorizeWithDiscordCode(String code){
 
-        this.redirectUrl = redirectUrl;
-
-        restClient = RestClient.builder()
-            .baseUrl("https://discord.com/api/oauth2")
-            .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
-            .build();
     }
 
-    public void authorizeWithDiscordCode(String code) {
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<>(defaultBody);
-        form.add("grant_type",  "authorization_code");
-        form.add("code", code);
-        form.add("redirect_uri", redirectUrl);
+    public void authorizeWithMSMToken(String token){
 
-        System.out.println(restClient.post()
-            .uri("/token")
-            .body(form)
-            .retrieve().body(String.class));
+    }
+
+    @Scheduled(cron = "0 */5 * * * *")
+    private void refreshDiscordTokens(){
+
     }
 }
