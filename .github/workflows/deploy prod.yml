@@ -36,7 +36,7 @@ jobs:
       active: false
 
   deploy:
-    needs: build-and-upload
+    needs: [ build-and-upload, disable-monitor ]
     runs-on: [self-hosted, Windows]
     environment: production
     steps:
