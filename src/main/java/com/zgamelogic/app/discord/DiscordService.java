@@ -1,11 +1,15 @@
 package com.zgamelogic.app.discord;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
 public class DiscordService {
     private final RestClient restClient;
@@ -29,35 +33,50 @@ public class DiscordService {
             .build();
     }
 
-    public DiscordAuthenticationResponse authorizeWithDiscordCode(String code) {
+    public Optional<DiscordAuthenticationResponse> authorizeWithDiscordCode(String code) {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>(defaultBody);
         form.add("grant_type",  "authorization_code");
         form.add("code", code);
         form.add("redirect_uri", redirectUrl);
 
-        return restClient.post()
-            .uri("/token")
-            .body(form)
-            .retrieve()
-            .body(DiscordAuthenticationResponse.class);
+        try {
+            return Optional.ofNullable(restClient.post()
+                .uri("/token")
+                .body(form)
+                .retrieve()
+                .body(DiscordAuthenticationResponse.class));
+        } catch (Exception e) {
+            log.debug("Failed to authorize with discord code", e);
+            return Optional.empty();
+        }
     }
 
-    public DiscordAuthenticationResponse authorizeWithDiscordRefreshToken(String refreshToken) {
+    public Optional<DiscordAuthenticationResponse> authorizeWithDiscordRefreshToken(String refreshToken) {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>(defaultBody);
         form.add("grant_type", "refresh_token");
         form.add("refresh_token", refreshToken);
 
-        return restClient.post()
-            .uri("/token")
-            .body(form)
-            .retrieve().body(DiscordAuthenticationResponse.class);
+        try {
+            return Optional.ofNullable(restClient.post()
+                .uri("/token")
+                .body(form)
+                .retrieve().body(DiscordAuthenticationResponse.class));
+        } catch (Exception e) {
+            log.debug("Failed to authorize with discord refresh token", e);
+            return Optional.empty();
+        }
     }
 
-    public DiscordUserResponse getDiscordUserFromToken(String token){
+    public Optional<DiscordUserResponse> getDiscordUserFromToken(String token){
         RestClient restClient = RestClient.builder()
-                .baseUrl("https://discord.com/api/users/@me")
-                .defaultHeader("Authorization", "Bearer " + token)
-                .build();
-        return restClient.get().retrieve().body(DiscordUserResponse.class);
+            .baseUrl("https://discord.com/api/users/@me")
+            .defaultHeader("Authorization", "Bearer " + token)
+            .build();
+        try {
+            return Optional.ofNullable(restClient.get().retrieve().body(DiscordUserResponse.class));
+        } catch (Exception e) {
+            log.debug("Failed to get discord user from token", e);
+            return Optional.empty();
+        }
     }
 }

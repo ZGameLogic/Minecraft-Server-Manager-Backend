@@ -1,0 +1,11 @@
+### Authenticate with a code
+POST http://localhost:8080/api/auth/code
+Content-Type: text/plain
+
+code
+
+### Authenticate with a token
+POST http://localhost:8080/api/auth/token
+Content-Type: text/plain
+
+token

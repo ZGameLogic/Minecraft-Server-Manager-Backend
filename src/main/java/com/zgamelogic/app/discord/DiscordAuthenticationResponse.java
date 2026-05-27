@@ -9,7 +9,7 @@ public record DiscordAuthenticationResponse(
     String accessToken,
     @JsonProperty("expires_in")
     Long expiresIn,
-    @JsonProperty("refreshToken")
+    @JsonProperty("refresh_token")
     String refreshToken,
     String scope
 ) {}
