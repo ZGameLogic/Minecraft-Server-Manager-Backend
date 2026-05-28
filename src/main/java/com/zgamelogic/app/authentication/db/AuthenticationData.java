@@ -33,6 +33,8 @@ public class AuthenticationData {
     private String discordToken;
     private String discordRefreshToken;
     private Instant discordTokenExpiration;
+    @JsonView(Views.AuthView.class)
+    private String discordAvatar;
 
     public static class AuthenticationDataId implements Serializable {
         private long discordId;
