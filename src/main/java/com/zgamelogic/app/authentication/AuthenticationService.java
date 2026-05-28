@@ -34,7 +34,8 @@ public class AuthenticationService {
             userRes.username(),
             authRes.accessToken(),
             authRes.refreshToken(),
-            Instant.now().plusSeconds(authRes.expiresIn())
+            Instant.now().plusSeconds(authRes.expiresIn()),
+            userRes.avatar()
         );
         return authenticationDataRepository.save(authData);
     }
@@ -44,6 +45,7 @@ public class AuthenticationService {
         if(updateAuthData) {
             DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authData.getDiscordToken()).orElseThrow(InvalidDiscordTokenException::new);
             authData.setDiscordUsername(userRes.username());
+            authData.setDiscordAvatar(userRes.avatar());
             authData = authenticationDataRepository.save(authData);
         }
         return authData;
