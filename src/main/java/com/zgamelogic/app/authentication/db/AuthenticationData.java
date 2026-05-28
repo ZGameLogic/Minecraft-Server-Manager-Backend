@@ -1,15 +1,13 @@
 package com.zgamelogic.app.authentication.db;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zgamelogic.app.authentication.Views;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -17,6 +15,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(AuthenticationData.AuthenticationDataId.class)
@@ -27,6 +26,7 @@ public class AuthenticationData {
     private String msmToken;
     @Id
     @JsonView(Views.AuthView.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private long discordId;
     @JsonView(Views.AuthView.class)
     private String discordUsername;
