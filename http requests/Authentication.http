@@ -9,6 +9,3 @@ Content-Type: application/json
 
 ### Authenticate with a token
 POST http://localhost:8080/api/auth/token
-Content-Type: text/plain
-
-token
