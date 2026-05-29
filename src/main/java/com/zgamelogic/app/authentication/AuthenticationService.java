@@ -8,7 +8,7 @@ import com.zgamelogic.app.discord.DiscordUserResponse;
 import com.zgamelogic.app.exceptions.InvalidDiscordCodeException;
 import com.zgamelogic.app.exceptions.InvalidDiscordTokenException;
 import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
-import com.zgamelogic.app.user.db.UserEntity;
+import com.zgamelogic.app.user.db.UserData;
 import com.zgamelogic.app.user.db.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class AuthenticationService {
     public AuthenticationData authorizeWithDiscordCode(String code, String redirectUrl) {
         DiscordAuthenticationResponse authRes = discordService.authorizeWithDiscordCode(code, redirectUrl).orElseThrow(InvalidDiscordCodeException::new);
         DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authRes.accessToken()).orElseThrow(InvalidDiscordTokenException::new);
-        UserEntity user = new UserEntity(userRes.id(), userRes.username(), userRes.avatar());
+        UserData user = new UserData(userRes.id(), userRes.username(), userRes.avatar());
         if(userRepository.findById(userRes.id()).isEmpty()) user = userRepository.save(user);
         AuthenticationData authData = new AuthenticationData(
             generateToken(),
@@ -47,7 +47,7 @@ public class AuthenticationService {
         AuthenticationData authData = authenticationDataRepository.findByMsmToken(token).orElseThrow(InvalidMsmTokenException::new);
         if(updateAuthData) {
             DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authData.getDiscordToken()).orElseThrow(InvalidDiscordTokenException::new);
-            UserEntity user = new UserEntity(userRes.id(), userRes.username(), userRes.avatar());
+            UserData user = new UserData(userRes.id(), userRes.username(), userRes.avatar());
             user = userRepository.save(user);
             authData.setUser(user);
         }

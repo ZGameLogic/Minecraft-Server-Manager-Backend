@@ -11,8 +11,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "users", schema = "minecraft_server_manager")
-public class UserEntity {
+public class UserData {
     @Id
     @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -25,7 +26,7 @@ public class UserEntity {
     @JsonProperty("discordAvatar")
     private String avatar;
 
-    public UserEntity(long id, String username, String avatar) {
+    public UserData(long id, String username, String avatar) {
         this.id = id;
         this.username = username;
         this.avatar = avatar;

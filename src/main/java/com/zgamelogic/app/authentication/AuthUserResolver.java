@@ -1,7 +1,7 @@
 package com.zgamelogic.app.authentication;
 
-import com.zgamelogic.app.authentication.db.AuthenticationData;
 import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
+import com.zgamelogic.app.user.db.UserData;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return AuthenticationData.class.isAssignableFrom(parameter.getParameterType());
+        return UserData.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override
@@ -32,6 +32,6 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
         String cookieToken = nativeRequest.getCookies() != null ? Arrays.stream(nativeRequest.getCookies()).filter(c -> c.getName().equals("token")).findFirst().map(Cookie::getValue).orElse(null) : "";
         String token = tokenHeader != null && !tokenHeader.isEmpty() ? tokenHeader : cookieToken;
         if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
-        return authenticationService.authorizeWithMSMToken(token, false);
+        return authenticationService.authorizeWithMSMToken(token, false).getUser();
     }
 }

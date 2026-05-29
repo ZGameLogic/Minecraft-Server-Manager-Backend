@@ -3,7 +3,7 @@ package com.zgamelogic.app.authentication.db;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zgamelogic.app.authentication.Views;
-import com.zgamelogic.app.user.db.UserEntity;
+import com.zgamelogic.app.user.db.UserData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,9 +27,9 @@ public class AuthenticationData {
     @JoinColumn(name = "discord_id")
     @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
     @JsonUnwrapped
-    private UserEntity user;
+    private UserData user;
 
-    public AuthenticationData(String msmToken, String discordToken, String discordRefreshToken, Instant discordTokenExpiration, UserEntity user) {
+    public AuthenticationData(String msmToken, String discordToken, String discordRefreshToken, Instant discordTokenExpiration, UserData user) {
         this.msmToken = msmToken;
         this.discordToken = discordToken;
         this.discordRefreshToken = discordRefreshToken;
