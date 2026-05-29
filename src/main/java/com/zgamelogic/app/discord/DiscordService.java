@@ -75,4 +75,19 @@ public class DiscordService {
             return Optional.empty();
         }
     }
+
+    public void revokeToken(String discordToken) {
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>(defaultBody);
+        form.add("token", discordToken);
+
+        try {
+            restClient.post()
+                .uri("/token/revoke")
+                .body(form)
+                .retrieve()
+                .body(String.class);
+        } catch (Exception e) {
+            log.debug("Failed to revoke discord token", e);
+        }
+    }
 }

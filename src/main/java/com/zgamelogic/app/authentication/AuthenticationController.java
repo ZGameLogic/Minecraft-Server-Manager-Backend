@@ -6,6 +6,8 @@ import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +40,16 @@ public class AuthenticationController {
         String token = bodyToken != null && !bodyToken.isEmpty() ? bodyToken : cookieToken;
         if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
         return authenticationService.authorizeWithMSMToken(token, true);
+    }
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<?> logout(
+            @RequestBody(required = false) String bodyToken,
+            @CookieValue(value = "token", required = false) String cookieToken
+    ){
+        String token = bodyToken != null && !bodyToken.isEmpty() ? bodyToken : cookieToken;
+        if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
+        authenticationService.revokeWithMsmToken(token);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
