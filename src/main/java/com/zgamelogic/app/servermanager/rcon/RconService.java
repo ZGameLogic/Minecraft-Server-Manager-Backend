@@ -1,7 +1,7 @@
-package com.zgamelogic.app.msm.rcon;
+package com.zgamelogic.app.servermanager.rcon;
 
-import com.zgamelogic.app.msm.db.MinecraftServerData;
-import com.zgamelogic.app.msm.db.MinecraftServerDataRepository;
+import com.zgamelogic.app.servermanager.db.MinecraftServerData;
+import com.zgamelogic.app.servermanager.db.MinecraftServerDataRepository;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

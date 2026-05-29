@@ -1,4 +1,4 @@
-package com.zgamelogic.app.msm.rcon;
+package com.zgamelogic.app.servermanager.rcon;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

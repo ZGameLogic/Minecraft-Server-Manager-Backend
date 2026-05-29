@@ -1,4 +1,4 @@
-package com.zgamelogic.app.msm.ping;
+package com.zgamelogic.app.servermanager.ping;
 
 import org.springframework.stereotype.Service;
 

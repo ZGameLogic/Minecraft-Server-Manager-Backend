@@ -1,8 +1,8 @@
-package com.zgamelogic.app.msm;
+package com.zgamelogic.app.servermanager;
 
-import com.zgamelogic.app.msm.db.MinecraftServerData;
-import com.zgamelogic.app.msm.ping.PingService;
-import com.zgamelogic.app.msm.rcon.RconService;
+import com.zgamelogic.app.servermanager.db.MinecraftServerData;
+import com.zgamelogic.app.servermanager.ping.PingService;
+import com.zgamelogic.app.servermanager.rcon.RconService;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -21,7 +21,9 @@ public class MsmServerService {
 //        startServer(new MinecraftServerData(null, 0, 0, null, null, null, null, "start.bat"));
     }
 
-    public void createServer(){}
+    public void createServer(){
+
+    }
 
     public void startServer(MinecraftServerData mcServer){
         ProcessBuilder pb = new ProcessBuilder("cmd", "/c", mcServer.getStartFile());

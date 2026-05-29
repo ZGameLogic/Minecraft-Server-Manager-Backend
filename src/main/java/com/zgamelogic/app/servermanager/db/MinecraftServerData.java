@@ -1,4 +1,4 @@
-package com.zgamelogic.app.msm.db;
+package com.zgamelogic.app.servermanager.db;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface AuthenticationDataRepository extends JpaRepository<AuthenticationData, AuthenticationData.AuthenticationDataId> {
+public interface AuthenticationDataRepository extends JpaRepository<AuthenticationData, UUID> {
     Optional<AuthenticationData> findByMsmToken(String token);
     @Query("""
     SELECT a
