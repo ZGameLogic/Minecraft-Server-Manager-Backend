@@ -1,6 +1,8 @@
 package com.zgamelogic.app.authentication;
 
+import com.zgamelogic.app.exceptions.InvalidDiscordTokenException;
 import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
+import com.zgamelogic.app.exceptions.UnauthorizedException;
 import com.zgamelogic.app.user.db.UserData;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +33,11 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest nativeRequest = (HttpServletRequest) webRequest.getNativeRequest();
         String cookieToken = nativeRequest.getCookies() != null ? Arrays.stream(nativeRequest.getCookies()).filter(c -> c.getName().equals("token")).findFirst().map(Cookie::getValue).orElse(null) : "";
         String token = tokenHeader != null && !tokenHeader.isEmpty() ? tokenHeader : cookieToken;
-        if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
-        return authenticationService.authorizeWithMSMToken(token, false).getUser();
+        try {
+            if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
+            return authenticationService.authorizeWithMSMToken(token, false).getUser();
+        } catch (InvalidMsmTokenException | InvalidDiscordTokenException e) {
+            throw new UnauthorizedException();
+        }
     }
 }

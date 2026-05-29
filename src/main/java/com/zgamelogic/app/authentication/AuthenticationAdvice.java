@@ -1,7 +1,9 @@
 package com.zgamelogic.app.authentication;
 
 import com.zgamelogic.app.authentication.db.Authenticated;
+import com.zgamelogic.app.exceptions.InvalidDiscordTokenException;
 import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
+import com.zgamelogic.app.exceptions.UnauthorizedException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -28,9 +30,12 @@ public class AuthenticationAdvice {
         String tokenHeader = request.getHeader("Authorization");
         String cookieToken = request.getCookies() != null ? Arrays.stream(request.getCookies()).filter(c -> c.getName().equals("token")).findFirst().map(Cookie::getValue).orElse(null) : "";
         String token = tokenHeader != null && !tokenHeader.isEmpty() ? tokenHeader : cookieToken;
-        if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
-        authenticationService.authorizeWithMSMToken(token, false);
-
+        try {
+            if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
+            authenticationService.authorizeWithMSMToken(token, false);
+        } catch (InvalidMsmTokenException | InvalidDiscordTokenException e) {
+            throw new UnauthorizedException();
+        }
         return joinPoint.proceed();
     }
 
