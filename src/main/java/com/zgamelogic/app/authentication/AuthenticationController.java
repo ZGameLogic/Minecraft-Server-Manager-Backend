@@ -45,11 +45,18 @@ public class AuthenticationController {
     @PostMapping("/auth/logout")
     public ResponseEntity<?> logout(
             @RequestBody(required = false) String bodyToken,
-            @CookieValue(value = "token", required = false) String cookieToken
+            @CookieValue(value = "token", required = false) String cookieToken,
+            HttpServletResponse response
     ){
         String token = bodyToken != null && !bodyToken.isEmpty() ? bodyToken : cookieToken;
         if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
         authenticationService.revokeWithMsmToken(token);
+        Cookie authCookie = new Cookie("token", "");
+        authCookie.setHttpOnly(true);
+        authCookie.setPath("/");
+        authCookie.setMaxAge(0);
+        response.addCookie(authCookie);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
