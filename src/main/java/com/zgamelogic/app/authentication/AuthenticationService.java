@@ -67,4 +67,10 @@ public class AuthenticationService {
     private String generateToken(){
         return UUID.randomUUID().toString().replace("-", "");
     }
+
+    public void revokeWithMsmToken(String token) {
+        AuthenticationData authData = authenticationDataRepository.findByMsmToken(token).orElseThrow(InvalidMsmTokenException::new);
+        discordService.revokeToken(authData.getDiscordToken());
+        authenticationDataRepository.delete(authData);
+    }
 }
