@@ -1,7 +1,6 @@
 package com.zgamelogic.app.servermanager;
 
 import com.zgamelogic.app.authentication.db.Authenticated;
-import com.zgamelogic.app.user.db.UserData;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

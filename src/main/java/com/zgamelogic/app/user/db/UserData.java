@@ -7,6 +7,8 @@ import com.zgamelogic.app.authentication.Views;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,16 +17,19 @@ import lombok.*;
 @Table(name = "users", schema = "minecraft_server_manager")
 public class UserData {
     @Id
-    @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
+    @JsonView(Views.AuthView.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JsonProperty("discordId")
     private long id;
-    @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
+    @JsonView(Views.AuthView.class)
     @JsonProperty("discordUsername")
     private String username;
-    @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
+    @JsonView(Views.AuthView.class)
     @JsonProperty("discordAvatar")
     private String avatar;
+    @OneToMany(mappedBy = "user")
+    @JsonView(Views.AuthView.class)
+    private List<Permission> permissions;
 
     public UserData(long id, String username, String avatar) {
         this.id = id;

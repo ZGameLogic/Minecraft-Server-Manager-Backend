@@ -1,6 +1,7 @@
 package com.zgamelogic.app.authentication;
 
 public interface Views {
-    class AuthViewCode {}
-    class AuthViewToken {}
+    class AuthView {}
+    class AuthViewCode extends AuthView {}
+    class AuthViewToken extends AuthView{}
 }

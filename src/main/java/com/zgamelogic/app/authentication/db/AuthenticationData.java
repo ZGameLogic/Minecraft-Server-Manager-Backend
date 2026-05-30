@@ -25,7 +25,7 @@ public class AuthenticationData {
 
     @ManyToOne
     @JoinColumn(name = "discord_id")
-    @JsonView({Views.AuthViewCode.class, Views.AuthViewToken.class})
+    @JsonView(Views.AuthView.class)
     @JsonUnwrapped
     private UserData user;
 
