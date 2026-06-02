@@ -27,6 +27,8 @@ public class UserData {
     @JsonView(Views.AuthView.class)
     @JsonProperty("discordAvatar")
     private String avatar;
+    private boolean superAdmin;
+    private boolean superModerator;
     @OneToMany(mappedBy = "user")
     @JsonView(Views.AuthView.class)
     private List<Permission> permissions;
@@ -35,5 +37,7 @@ public class UserData {
         this.id = id;
         this.username = username;
         this.avatar = avatar;
+        superAdmin = false;
+        superModerator = false;
     }
 }

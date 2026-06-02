@@ -26,8 +26,7 @@ public class Permission {
 
     public enum PermissionType {
         ADMIN,
-        CREATE,
-        SUPER
+        MODERATOR
     }
 
     @Embeddable
