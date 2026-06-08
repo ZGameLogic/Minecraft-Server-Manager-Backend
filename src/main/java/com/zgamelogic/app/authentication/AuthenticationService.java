@@ -8,6 +8,8 @@ import com.zgamelogic.app.discord.DiscordUserResponse;
 import com.zgamelogic.app.exceptions.InvalidDiscordCodeException;
 import com.zgamelogic.app.exceptions.InvalidDiscordTokenException;
 import com.zgamelogic.app.exceptions.InvalidMsmTokenException;
+import com.zgamelogic.app.user.db.UserData;
+import com.zgamelogic.app.user.db.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -24,18 +26,19 @@ import java.util.UUID;
 public class AuthenticationService {
     private final DiscordService discordService;
     private final AuthenticationDataRepository authenticationDataRepository;
+    private final UserRepository userRepository;
 
     public AuthenticationData authorizeWithDiscordCode(String code, String redirectUrl) {
         DiscordAuthenticationResponse authRes = discordService.authorizeWithDiscordCode(code, redirectUrl).orElseThrow(InvalidDiscordCodeException::new);
         DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authRes.accessToken()).orElseThrow(InvalidDiscordTokenException::new);
+        UserData user = new UserData(userRes.id(), userRes.username(), userRes.avatar());
+        if(userRepository.findById(userRes.id()).isEmpty()) user = userRepository.save(user);
         AuthenticationData authData = new AuthenticationData(
             generateToken(),
-            userRes.id(),
-            userRes.username(),
             authRes.accessToken(),
             authRes.refreshToken(),
             Instant.now().plusSeconds(authRes.expiresIn()),
-            userRes.avatar()
+            user
         );
         return authenticationDataRepository.save(authData);
     }
@@ -44,9 +47,9 @@ public class AuthenticationService {
         AuthenticationData authData = authenticationDataRepository.findByMsmToken(token).orElseThrow(InvalidMsmTokenException::new);
         if(updateAuthData) {
             DiscordUserResponse userRes = discordService.getDiscordUserFromToken(authData.getDiscordToken()).orElseThrow(InvalidDiscordTokenException::new);
-            authData.setDiscordUsername(userRes.username());
-            authData.setDiscordAvatar(userRes.avatar());
-            authData = authenticationDataRepository.save(authData);
+            UserData user = new UserData(userRes.id(), userRes.username(), userRes.avatar());
+            user = userRepository.save(user);
+            authData.setUser(user);
         }
         return authData;
     }

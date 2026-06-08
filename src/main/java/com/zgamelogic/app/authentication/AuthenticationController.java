@@ -8,17 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
-    @JsonView(Views.AuthView.class)
+    @JsonView(Views.AuthViewCode.class)
     @PostMapping("/auth/code")
     public AuthenticationData authorizeWithDiscordCode(@RequestBody CodeAuthenticationRequest req, HttpServletResponse response){
         AuthenticationData authData = authenticationService.authorizeWithDiscordCode(req.code(), req.redirectUrl());
@@ -31,13 +28,13 @@ public class AuthenticationController {
         return authData;
     }
 
-    @JsonView(Views.AuthView.class)
+    @JsonView(Views.AuthViewToken.class)
     @PostMapping("/auth/token")
     public AuthenticationData authorizeWithMsmToken(
-            @RequestBody(required = false) String bodyToken,
+            @RequestHeader(required = false, name = "Authorization") String tokenHeader,
             @CookieValue(value = "token", required = false) String cookieToken
     ){
-        String token = bodyToken != null && !bodyToken.isEmpty() ? bodyToken : cookieToken;
+        String token = tokenHeader != null && !tokenHeader.isEmpty() ? tokenHeader : cookieToken;
         if(token == null || token.isEmpty()) throw new InvalidMsmTokenException();
         return authenticationService.authorizeWithMSMToken(token, true);
     }

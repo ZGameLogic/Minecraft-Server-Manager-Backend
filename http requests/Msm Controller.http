@@ -1,0 +1,2 @@
+### Test
+POST http://localhost:8080/api/server/create
