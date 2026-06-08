@@ -38,10 +38,10 @@ public class MsmServerService {
 
     public void startServer(MinecraftServerData mcServer){
         if(pingService.pingServer(mcServer).isPresent()){
-            log.info("${} is already running", mcServer.getName());
+            log.info("{} is already running", mcServer.getName());
             return;
         } else {
-            log.info("${} is starting", mcServer.getName());
+            log.info("{} is starting", mcServer.getName());
         }
         ProcessBuilder pb = new ProcessBuilder("cmd", "/c", mcServer.getStartFile());
         File dir = new File(mcServer.getServerDir());
