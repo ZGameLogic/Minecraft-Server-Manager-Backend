@@ -26,8 +26,9 @@ public class MinecraftServerData {
     private String version;
     private String domain;
     private String startFile;
+    private String serverDir;
 
-    public MinecraftServerData(String name, int port, int rconPort, String rconPass, boolean autoStart, String type, String version, String domain, String startFile) {
+    public MinecraftServerData(String name, int port, int rconPort, String rconPass, boolean autoStart, String type, String version, String domain, String startFile, String serverDir) {
         id = UUID.randomUUID();
         this.name = name;
         this.port = port;
@@ -38,5 +39,6 @@ public class MinecraftServerData {
         this.domain = domain;
         this.startFile = startFile;
         this.autoStart = autoStart;
+        this.serverDir = serverDir;
     }
 }
