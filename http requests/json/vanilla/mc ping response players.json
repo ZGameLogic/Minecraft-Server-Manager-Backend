@@ -1,0 +1,18 @@
+{
+  "description": "A Minecraft Server",
+  "players": {
+    "max": 20,
+    "online": 1,
+    "sample": [
+      {
+        "id": "a9250780-cde9-4093-929e-7637a73162b2",
+        "name": "zabory"
+      }
+    ]
+  },
+  "version": {
+    "name": "26.1.2",
+    "protocol": 775
+  },
+  "enforcesSecureChat": true
+}

@@ -1,0 +1,12 @@
+{
+  "description": "A Minecraft Server",
+  "players": {
+    "max": 20,
+    "online": 0
+  },
+  "version": {
+    "name": "26.1.2",
+    "protocol": 775
+  },
+  "enforcesSecureChat": true
+}
