@@ -1,5 +1,7 @@
 package com.zgamelogic.app.servermanager.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.zgamelogic.app.servermanager.data.Views;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,16 +18,25 @@ import java.util.UUID;
 @Setter
 public class MinecraftServerData {
     @Id
+    @JsonView(Views.GeneralServerView.class)
     private UUID id;
+    @JsonView(Views.GeneralServerView.class)
     private String name;
+    @JsonView(Views.GeneralServerView.class)
     private int port;
     private int rconPort;
     private String rconPass;
+    @JsonView(Views.GeneralServerView.class)
     private boolean autoStart;
+    @JsonView(Views.GeneralServerView.class)
     private String type;
+    @JsonView(Views.GeneralServerView.class)
     private String version;
+    @JsonView(Views.GeneralServerView.class)
     private String domain;
+    @JsonView(Views.GeneralServerView.class)
     private String startFile;
+    @JsonView(Views.GeneralServerView.class)
     private String serverDir;
 
     public MinecraftServerData(String serverDir, String startFile) {

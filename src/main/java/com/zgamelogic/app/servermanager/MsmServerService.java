@@ -1,5 +1,6 @@
 package com.zgamelogic.app.servermanager;
 
+import com.zgamelogic.app.servermanager.data.MinecraftServerDTO;
 import com.zgamelogic.app.servermanager.db.MinecraftServerData;
 import com.zgamelogic.app.servermanager.db.MinecraftServerDataRepository;
 import com.zgamelogic.app.servermanager.ping.PingService;
@@ -10,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,10 +56,13 @@ public class MsmServerService {
         }
     }
 
+    public List<MinecraftServerDTO> getMinecraftServerData(){
+        return minecraftServerDataRepository.findAll().stream().map(m ->
+                new MinecraftServerDTO(m, pingService.pingServer(m).orElse(null)))
+                .toList();
+    }
+
     public void sendServerCommand(MinecraftServerData mcServer, String command){
 
     }
-
-    public void getPingData(MinecraftServerData mcServer){}
-
 }
