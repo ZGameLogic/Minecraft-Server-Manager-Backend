@@ -1,2 +1,2 @@
-### Test
-POST http://localhost:8080/api/server/create
+### Get all Servers
+GET {{base_url}}/servers
