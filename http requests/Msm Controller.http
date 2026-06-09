@@ -1,2 +1,2 @@
 ### Get all Servers
-GET http://localhost:8080/api/servers
+GET {{base_url}}/servers
