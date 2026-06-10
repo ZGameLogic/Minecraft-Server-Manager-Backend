@@ -8,6 +8,7 @@ import com.zgamelogic.app.servermanager.rcon.RconService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -32,6 +33,13 @@ public class MsmServerService {
     @EventListener(ApplicationReadyEvent.class)
     public void postInit(){
         minecraftServerDataRepository.findAllByAutoStartIsTrue().forEach(this::startServer);
+    }
+
+    @Scheduled(cron = "0 */5 * * * *")
+    public void autoRestart(){
+        minecraftServerDataRepository.findAllByAutoRestartIsTrueAndAutoStartIsTrue()
+            .stream().filter(server -> pingService.pingServer(server).isEmpty())
+            .forEach(this::startServer);
     }
 
     public void createServer(){
