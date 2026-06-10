@@ -29,6 +29,8 @@ public class MinecraftServerData {
     @JsonView(Views.GeneralServerView.class)
     private boolean autoStart;
     @JsonView(Views.GeneralServerView.class)
+    private boolean autoRestart;
+    @JsonView(Views.GeneralServerView.class)
     private String type;
     @JsonView(Views.GeneralServerView.class)
     private String version;

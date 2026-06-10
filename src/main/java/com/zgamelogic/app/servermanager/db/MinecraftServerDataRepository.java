@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface MinecraftServerDataRepository extends JpaRepository<MinecraftServerData, UUID> {
     List<MinecraftServerData> findAllByAutoStartIsTrue();
+    List<MinecraftServerData> findAllByAutoRestartIsTrueAndAutoStartIsTrue();
 }
