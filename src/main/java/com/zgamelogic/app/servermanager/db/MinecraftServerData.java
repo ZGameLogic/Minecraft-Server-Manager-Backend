@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "minecraft_server_data", schema = "minecraft_server_manager")
+@Table(name = "minecraft_server_data")
 @NoArgsConstructor
 @Getter
 @Setter

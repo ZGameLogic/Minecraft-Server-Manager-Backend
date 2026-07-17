@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "permissions", schema = "minecraft_server_manager")
+@Table(name = "permissions")
 public class Permission {
     @EmbeddedId
     @JsonUnwrapped
