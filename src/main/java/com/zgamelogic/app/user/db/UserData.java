@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @ToString
-@Table(name = "users", schema = "minecraft_server_manager")
+@Table(name = "users")
 public class UserData {
     @Id
     @JsonView(Views.AuthView.class)

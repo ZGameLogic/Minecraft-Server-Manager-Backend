@@ -14,7 +14,7 @@ import java.time.Instant;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(schema = "minecraft_server_manager", name = "auth_data")
+@Table(name = "auth_data")
 public class AuthenticationData {
     @Id
     @JsonView(Views.AuthViewCode.class)
